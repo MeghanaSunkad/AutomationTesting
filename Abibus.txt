@@ -1,0 +1,272 @@
+import java.time.Duration;
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.Select;
+
+public class ABHIFINAL2 {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+					System.setProperty("webdriver.chrome.driver","C:\\Program Files\\selenium\\chromedriver_win32 (1)\\chromedriver.exe");
+					WebDriver driver=new ChromeDriver();
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+					driver.get("https://www.abhibus.com/");
+					driver.manage().window().maximize();
+					
+					String Titleofpage=driver.getTitle();
+					System.out.println("Title of page is:"+Titleofpage);
+					
+					////LOGO/////
+					boolean isDisplayed=driver.findElement(By.xpath("//img[@alt='abhibus.com']")).isDisplayed();
+					
+					if(isDisplayed) {
+						System.out.println("Logo is displayed:");	
+					}
+					else
+					{
+						System.out.println("Logo is not displayed:");	
+					}
+					
+					//Total no of links//
+					List<WebElement> b=driver.findElements(By.tagName("a"));
+					int sizeb=+b.size();
+					System.out.println("Total no of links:"+sizeb);
+					for(int i=1;i<sizeb;i++)
+					{
+						WebElement a=b.get(i);
+						String c=a.getText();
+						System.out.println(c);
+					}
+					
+					
+					// Selecting Source
+					String optionToSelect="Bellary";
+					driver.findElement(By.xpath("//input[@id='source']")).sendKeys("bel");
+					List<WebElement>OptionList=driver.findElements(By.xpath("//ul[@id='ui-id-1']//li"));
+					for(WebElement ele:OptionList)
+					{
+						String currentOption=ele.getText();
+						if (currentOption.contains(optionToSelect))
+						{
+							ele.click();
+							break;
+						}
+					}
+					
+					//  Selecting Destination
+					String optionToSelect1="Bengaluru";
+					driver.findElement(By.xpath("//input[@id='destination']")).sendKeys("Ben");
+					List<WebElement>OptionList1=driver.findElements(By.xpath("//ul[@id='ui-id-2']//li"));
+					for(WebElement ele2:OptionList1)
+					{
+						String currentOption1=ele2.getText();
+						if (currentOption1.contains(optionToSelect1))
+						{
+							ele2.click();
+							break;
+						}
+					}
+					
+					//Choosing date of journey
+					String year="2023";
+					String month="june";
+					String date="30";
+					driver.findElement(By.id("datepicker1")).click();
+					
+					while(true)
+					{
+						String mon=driver.findElement(By.xpath("//span[normalize-space()='June']")).getText();
+						String yer=driver.findElement(By.xpath("//div[@class='ui-datepicker-header ui-widget-header ui-helper-clearfix ui-corner-left']//span[@class='ui-datepicker-year'][normalize-space()='2023']")).getText();
+						if(mon.equalsIgnoreCase(month)&&yer.equals(year))
+						break;
+						//else
+							//driver.findElement(By.xpath("//span[@class='ui-icon ui-icon-circle-triangle-e']")).click();
+					}
+					//Date selection
+					List<WebElement> alldates=driver.findElements(By.xpath("//div[@id='ui-datepicker-div']//td"));
+					for(WebElement ele1:alldates)
+					{
+						String dt=ele1.getText();
+						if(dt.equals(date))
+						{
+							ele1.click();
+							break;
+						}
+					}
+					
+					//clicking Search button
+					driver.findElement(By.linkText("Search")).click();
+					
+					//Going to next page//
+							///////Filter webElement////
+							driver.findElement(By.xpath("//span[@class='f-left sidebar-header']"));
+							
+							
+							////NON AC BUS///////
+							driver.findElement(By.id("bustypeNON-AC")).click();
+							
+							
+					////////BUS PARTNER-SELECTION FROM DROPDOWNS (SRS Travels & Logistics)///////
+					driver.findElement(By.xpath("//span[normalize-space()='Bus Partner']")).click();
+					driver.findElement(By.xpath("//input[@placeholder='Search for Bus Partner']")).click();
+					selectChoiceValues1(driver,"SRS Travels and Logistics Private Limited");
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+					
+					////////BOARDING POINT///////////////
+					driver.findElement(By.xpath("//span[normalize-space()='Boarding Point']")).click();
+					driver.findElement(By.xpath("//input[@placeholder='Search for Boarding Point']")).click();
+					selectChoiceValues2(driver,"Bellary");
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+					
+					////////Dropping point///////////
+					driver.findElement(By.xpath("//span[normalize-space()='Dropping Point']")).click();
+					driver.findElement(By.xpath("//input[@placeholder='Search for Dropping Point']")).click();
+					selectChoiceValues3(driver,"JALAHALLI");
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+					
+					//---***---***DEPARTURE TIME***---***----//
+				    driver.findElement(By.xpath("//span[normalize-space()='Depature Time']")).click();
+				    
+				    
+				    driver.findElement(By.xpath("//li[@id='startTime4']")).click();//after  11PM*/
+				    
+		            ///// clicking on Select seat button////
+				    WebElement element = driver.findElement(By.id("1527766528"));
+				    Actions actions = new Actions(driver); 
+				    actions.moveToElement(element).click().build().perform();
+				    driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+				    
+				    //Selecting seat from available seats//
+					driver.findElement(By.id("UO7-7ZZ")).click();// available upper seat
+					
+					//choosing boarding point and dropping point
+					Select dropdown = new Select(driver.findElement(By.id("boardingpoint_id")));// boarding point dropdown
+					dropdown.selectByIndex(1);
+					Select dropdown1 = new Select(driver.findElement(By.id("droppingpoint_id")));// boarding point dropdown
+					dropdown1.selectByIndex(4);
+					
+					//clicking on continue payment button
+					 WebElement element1 = driver.findElement(By.id("btnEnable1"));
+					    Actions actions1 = new Actions(driver); 
+					    actions1.moveToElement(element1).click().build().perform();
+					    driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+					
+					//Entering to next page entering personnal details
+					driver.findElement(By.id("mobileNumber")).sendKeys("9481162106");  
+					driver.findElement(By.id("EmailID")).sendKeys("anushagksandur@gmail.com"); 
+					driver.findElement(By.id("Mobile_No")).sendKeys("9481162106");
+					driver.findElement(By.xpath("//label[@class='form-check-label whatsapp-container']//span[@class='checkmark']")).click();//checkmark
+					driver.findElement(By.id("adultname0")).sendKeys("ANUSHA GK");//enter full name
+					driver.findElement(By.id("adultage0")).sendKeys("30");//enter age 
+					
+					
+					/////click on check boxes for offers
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+					driver.findElement(By.xpath("//div[@class='travel-insu-sec']//label[1]//span[1]")).click();//check mark of agree terms & condition yes
+					
+					//make payment clicking on phonepay method
+					driver.findElement(By.id("tab_phonepe")).click();///select phonepay
+					driver.findElement(By.id("paynow")).click();///select paynow button
+					
+					driver.findElement(By.id("onboardingFormSubmitBtn")).click();/////OTP sending button
+					driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+					
+					
+				}
+				public static void selectChoiceValues1(WebDriver driver,String...value1)//String...value1 it can hold multiple string values
+				{
+					List<WebElement> choiceList1=driver.findElements(By.xpath("//label[@class='ng-binding']"));
+					if(!value1[0].equalsIgnoreCase("all"))
+					{
+						for(WebElement item1:choiceList1)
+						{
+							String text1=item1.getText();
+							for(String val1:value1)
+							{
+								if(text1.equals(val1))
+								{
+									item1.click();
+									break;
+								}
+							}
+						}
+					}
+					else
+					{
+						for(WebElement item1:choiceList1)
+						{
+							item1.click();
+						}
+					}
+				}
+
+				public static void selectChoiceValues2(WebDriver driver,String...value2)
+				{
+					List<WebElement> choiceList2=driver.findElements(By.xpath("//label[@class='ng-binding']"));
+					if(!value2[0].equalsIgnoreCase("all"))
+					{
+						for(WebElement item2:choiceList2)
+						{
+							String text2=item2.getText();
+							for(String val2:value2)
+							{
+								if(text2.equals(val2))
+								{
+									item2.click();
+									break;
+								}
+							}
+						}
+					}
+					else
+					{
+						for(WebElement item2:choiceList2)
+						{
+							item2.click();
+						}
+					}
+				}
+				
+				public static void selectChoiceValues3(WebDriver driver,String...value3)
+				{
+					List<WebElement> choiceList3=driver.findElements(By.xpath("//label[@class='ng-binding']"));
+					if(!value3[0].equalsIgnoreCase("all"))
+					{
+						for(WebElement item3:choiceList3)
+						{
+							String text3=item3.getText();
+							for(String val3:value3)
+							{
+								if(text3.equals(val3))
+								{
+									item3.click();
+									break;
+								}
+							}
+						}
+					}
+					else
+					{
+						for(WebElement item3:choiceList3)
+						{
+							item3.click();
+						}
+					}
+				
+				
+			    
+					    
+			}
+				
+		
+
+
+	}
+
+
+
